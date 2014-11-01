@@ -52,8 +52,9 @@ app.get('/brainwash/', function(req, res) {
 
 // Remove the last emotion data; for test purpose
 app.get('/forget/about/it/', function(req, res) {
-	Emotion.removeOne({}, {}, { sort: { 'when': -1 } }, function(err, emotion) {
+	Emotion.findOne({}, {}, { sort: { 'when': -1 } }, function(err, emotion) {
 		if (err) return console.error(err);
+		emotion.remove();
 		res.setHeader('Content-Type', 'application/json');
 		res.end(JSON.stringify(emotion))
 	});
