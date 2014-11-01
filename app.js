@@ -50,6 +50,15 @@ app.get('/brainwash/', function(req, res) {
 	});
 });
 
+// Remove the last emotion data; for test purpose
+app.get('/forget/about/it/', function(req, res) {
+	Emotion.removeOne({}, {}, { sort: { 'when': -1 } }, function(err, emotion) {
+		if (err) return console.error(err);
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(emotion))
+	});
+});
+
 // Listen!
 var port = process.env.PORT || 4444;
 server.listen(port, function() {
