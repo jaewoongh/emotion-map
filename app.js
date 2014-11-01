@@ -12,10 +12,12 @@ db.once('open', function() { console.log('MongoDB successfully connected'); });
 var Emotion = require('./models/emotion')(mongoose);
 
 // Routes
+// Main page
 app.get('/', function(req, res) {
 	res.send('hello');
 });
 
+// Add new emotion data
 app.get('/at/:location/feeling/:pulse/', function(req, res) {
 	var emotion = new Emotion({
 		nmea:		location,
@@ -24,11 +26,25 @@ app.get('/at/:location/feeling/:pulse/', function(req, res) {
 	});
 	emotion.save(function(err, emotion) {
 		if (err) return console.error(err);
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(emotion));
 	});
 });
 
+// Get all emotion data
 app.get('/data/', function(req, res) {
 	Emotion.find(function(err, emotions) {
+		if (err) return console.error(err);
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(emotions));
+	});
+});
+
+// Remove all emotion data; for test purpose
+app.get('/brainwash/', function(req, res) {
+	Emotion.remove({}, function() {});
+	Emotion.find(function(err, emotions) {
+		if (err) return console.error(err);
 		res.setHeader('Content-Type', 'application/json');
 		res.end(JSON.stringify(emotions));
 	});
