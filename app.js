@@ -20,8 +20,8 @@ app.get('/', function(req, res) {
 // Add new emotion data
 app.get('/at/:location/feeling/:pulse/', function(req, res) {
 	var emotion = new Emotion({
-		nmea:		location,
-		heartbeat:	pulse,
+		nmea:		req.params.location,
+		heartbeat:	req.params.pulse,
 		when:		new Date
 	});
 	emotion.save(function(err, emotion) {
