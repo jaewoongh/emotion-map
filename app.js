@@ -9,10 +9,29 @@ mongoose.connect('mongodb://user:shinymetalass@ds049160.mongolab.com:49160/emoti
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error: '));
 db.once('open', function() { console.log('MongoDB successfully connected'); });
+var Emotion = require('./models/emotion')(mongoose);
 
 // Routes
 app.get('/', function(req, res) {
 	res.send('hello');
+});
+
+app.get('/at/:location/feeling/:pulse/', function(req, res) {
+	var emotion = new Emotion({
+		nmea:		location,
+		heartbeat:	pulse,
+		when:		new Date
+	});
+	emotion.save(function(err, emotion) {
+		if (err) return console.error(err);
+	});
+});
+
+app.get('/data/', function(req, res) {
+	Emotion.find(function(err, emotions) {
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(emotions));
+	});
 });
 
 // Listen!
