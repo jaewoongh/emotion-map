@@ -10,6 +10,11 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error: '));
 db.once('open', function() { console.log('MongoDB successfully connected'); });
 
+// Routes
+app.get('/', function(req, res) {
+	res.send('hello');
+});
+
 // Listen!
 var port = process.env.PORT || 4444;
 server.listen(port, function() {
