@@ -13,6 +13,7 @@ var Emotion = require('./models/emotion')(mongoose);
 
 // Routes
 // Public
+var path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Add new emotion data
