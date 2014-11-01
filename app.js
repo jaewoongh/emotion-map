@@ -12,10 +12,8 @@ db.once('open', function() { console.log('MongoDB successfully connected'); });
 var Emotion = require('./models/emotion')(mongoose);
 
 // Routes
-// Main page
-app.get('/', function(req, res) {
-	res.send('hello');
-});
+// Public
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Add new emotion data
 app.get('/at/:location/feeling/:pulse/', function(req, res) {
